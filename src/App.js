@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import React from 'react'
+
+const Infoline = (props) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <tr>
+      <td>
+        {props.name}
+      </td>
+      <td>
+        <input type="text" />
+      </td>
+    </tr>
+  )
 }
 
-export default App;
+const Submit = () => {
+  return (
+    <div>
+      <table>
+        <tbody>
+          <Infoline name="Name:" />
+          <Infoline name="Address:" />
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button >
+     {props.text}
+    </button>
+  )
+}
+
+const App = () => (
+  <div>
+    <h1>give requested information</h1>
+    <Submit/>
+    <Button text="Submit"/>
+  </div>
+  
+  
+)
+
+export default App
