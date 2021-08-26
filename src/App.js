@@ -1,48 +1,68 @@
+import axios from "axios"
+import React, { useState, useEffect } from "react"
+import Contacts from "./components/Contacts"
+import Submit from "./components/Submit"
 
-import React from 'react'
+const App = () => {
 
-const Infoline = (props) => {
-  return (
-    <tr>
-      <td>
-        {props.name}
-      </td>
-      <td>
-        <input type="text" />
-      </td>
-    </tr>
+  const [contacts, setContact] = useState([])
+
+  useEffect(() => {
+    getPersons()
+  }, [])
+
+  
+  const getPersons = () => {
+    axios
+      .get("http://localhost:5000/api/contacts")
+      .then(res => {
+        setContact(res.data)
+      })
+      .catch(error => console.log(error));
+
+  }
+    
+  const createContact = ({firstName, lastName, address}) => {
+  
+    const contact = {
+      firstName: firstName,
+      lastName: lastName,
+      address: address
+    }
+    
+    axios.post("http://localhost:5000/api/contacts", contact)
+    .then(res => {
+      setContact([...contacts])
+      console.log(res.data)
+      getPersons()
+    }).catch(err => {
+      console.log(err)
+    });
+  }
+
+  const deleteContact = (id) => {
+    
+    axios.delete("http://localhost:5000/api/contacts/" + id)
+    .then(res => {
+      console.log(res.data)
+      getPersons()
+    })
+    .catch(err => {
+      console.log(err)
+  }
   )
 }
 
-const Submit = () => {
   return (
-    <div>
-      <table>
-        <tbody>
-          <Infoline name="Name:" />
-          <Infoline name="Address:" />
-        </tbody>
-      </table>
+
+    <div className="content">
+      <h1 className="headline">My Contacts</h1>
+      <hr className="hr"></hr>
+      <Submit onAdd={createContact}/> 
+      <h1>Contacts</h1>
+      <Contacts contacts={contacts} onDelete={deleteContact}/>   
     </div>
   )
 }
-
-const Button = (props) => {
-  return (
-    <button >
-     {props.text}
-    </button>
-  )
-}
-
-const App = () => (
-  <div>
-    <h1>give requested information</h1>
-    <Submit/>
-    <Button text="Submit"/>
-  </div>
-  
-  
-)
 
 export default App
